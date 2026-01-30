@@ -14,28 +14,28 @@ export default function LenisScroll() {
     // Add Lenis class to HTML for styling
     document.documentElement.classList.add('lenis');
 
-    // Initialize Lenis with perfectly tuned settings for buttery smooth scrolling
+    // Initialize Lenis with ultra-smooth settings
     const lenis = new Lenis({
-      duration: 1.2,           // Perfect balance - responsive yet smooth
-      easing: (t) => {
-        // Perfect easing function - exponential ease out
-        return 1 - Math.pow(1 - t, 3);
+      duration: 1.5,           // Optimal duration for smooth scrolling
+      easing: (t: number) => {
+        // Cubic ease-in-out for perfectly smooth motion throughout
+        return t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
       },
-      smooth: true,
-      smoothTouch: false,      // Disable on touch for better mobile performance
-      touchMultiplier: 2,      // Natural touch scrolling
-      infinite: false,
-      wheelMultiplier: 1,      // Natural wheel speed
+      wheelMultiplier: 0.8,    // Balanced for smooth, consistent speed
       normalizeWheel: true,    // Normalize wheel delta for consistency
-    });
+      lerp: 0.12,             // Optimal lerp for smooth interpolation
+    } as any);
 
-    // High-performance RAF loop with time delta
+    // High-performance RAF loop with optimal timing
     let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
-
+    
+    // Start RAF loop
     rafId = requestAnimationFrame(raf);
 
     // Handle window resize for responsive smoothness

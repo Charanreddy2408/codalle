@@ -24,9 +24,6 @@ if (typeof window !== 'undefined') {
 export default function EnhancedAdalineAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const layer1Ref = useRef<HTMLDivElement>(null);
-  const layer2Ref = useRef<HTMLDivElement>(null);
-  const layer3Ref = useRef<HTMLDivElement>(null);
   
   const [isClient, setIsClient] = useState(false);
 
@@ -36,13 +33,13 @@ export default function EnhancedAdalineAnimation() {
     offset: ['start start', 'end start'],
   });
 
-  // PERFECTLY SMOOTH spring physics - no lag, no stutter
+  // Ultra-smooth spring physics - optimized for buttery smooth scrolling
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,       // Higher stiffness for responsive feel
-    damping: 30,          // Moderate damping for natural motion
-    mass: 0.5,            // Light mass for quick response
+    damping: 30,          // Balanced damping for smooth motion
+    mass: 0.5,            // Standard mass for natural response
     restDelta: 0.001,     // Good precision without over-calculation
-    restSpeed: 0.01,      // Natural settling
+    restSpeed: 0.01,      // Natural settling speed
   });
 
   // GSAP enhancements
@@ -51,51 +48,6 @@ export default function EnhancedAdalineAnimation() {
 
     // GSAP ScrollTrigger for additional effects
     const ctx = gsap.context(() => {
-      // Parallax layers with GSAP
-      if (layer1Ref.current) {
-        gsap.to(layer1Ref.current, {
-          y: -200,
-          scale: 1.15,
-          opacity: 0.3,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.5, // Smooth scrubbing
-          },
-        });
-      }
-
-      if (layer2Ref.current) {
-        gsap.to(layer2Ref.current, {
-          y: -100,
-          scale: 1.08,
-          opacity: 0.2,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.2,
-          },
-        });
-      }
-
-      if (layer3Ref.current) {
-        gsap.to(layer3Ref.current, {
-          y: 100,
-          scale: 0.95,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 0.8,
-          },
-        });
-      }
-
       // Image shimmer effect
       if (imageRef.current) {
         gsap.to(imageRef.current, {
@@ -114,92 +66,164 @@ export default function EnhancedAdalineAnimation() {
     setIsClient(true);
   }, []);
 
-  // ULTRA-SMOOTH camera movement with maximum keyframes for cinematic feel
-  // More keyframes = smoother transitions between camera positions
+  // ULTRA-SMOOTH camera movement with optimal frame count
+  // More keyframes = smoother transitions throughout
+  const FRAME_COUNT = 250; // Optimized for smooth animation
+  
+  // Ultra-smooth easing - cubic ease-in-out for consistent smoothness
+  const smoothEase = (t: number) => {
+    // Cubic ease-in-out for perfectly smooth motion throughout
+    return t < 0.5 
+      ? 4 * t * t * t 
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+  
+  // Camera perspective - creates 3D depth for dolly movement (not zoom)
   const perspective = useTransform(
     smoothProgress,
-    // 100+ keyframes for pixel-perfect smoothness
-    Array.from({ length: 101 }, (_, i) => i / 100),
-    Array.from({ length: 101 }, (_, i) => {
-      const t = i / 100;
-      // Exponential easing for natural camera dolly feel
-      return 200 + Math.pow(t, 1.8) * 2800;
+    // 250 intermediate frames for pixel-perfect smoothness throughout
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Perspective change for 3D dolly effect - creates depth
+      const eased = smoothEase(t);
+      return 300 + eased * 4000; // Perspective for 3D dolly movement
     })
   );
 
+  // Camera Z movement - Main dolly movement through 3D scene (NO ZOOM)
   const translateZ = useTransform(
     smoothProgress,
-    Array.from({ length: 101 }, (_, i) => i / 100),
-    Array.from({ length: 101 }, (_, i) => {
-      const t = i / 100;
-      // Gradual depth movement with easing
-      return 30 - Math.pow(t, 1.6) * 1400;
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Camera dolly movement - moves through 3D space
+      const eased = smoothEase(t);
+      // Camera moves backward through scene (dolly out) - pure 3D movement
+      // This creates the dolly effect, not zoom
+      return 200 - eased * 3500; // Strong dolly movement through 3D space
     })
   );
 
+  // Scale - minimal change, focus on camera dolly movement (not zoom)
   const scale = useTransform(
     smoothProgress,
-    Array.from({ length: 101 }, (_, i) => i / 100),
-    Array.from({ length: 101 }, (_, i) => {
-      const t = i / 100;
-      // Smooth scale change with ease-in-out
-      return 3.5 - Math.pow(t, 1.4) * 2.6;
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Minimal scale change - camera dolly does the work, not zoom
+      const eased = smoothEase(t);
+      // Very slight scale adjustment to complement dolly, not create zoom effect
+      return 1.2 - eased * 0.15; // Minimal scale change (1.2 to 1.05)
     })
   );
 
-  // Minimal camera movement - mostly centered
+  // Camera Y movement - Vertical dolly movement (cinematic 3D camera movement)
   const translateY = useTransform(
     smoothProgress,
-    Array.from({ length: 51 }, (_, i) => i / 50),
-    Array.from({ length: 51 }, (_, i) => {
-      const t = i / 50;
-      // Very subtle vertical movement
-      return Math.sin(t * Math.PI) * 15;
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Vertical camera dolly movement - moves through 3D space
+      const eased = smoothEase(t);
+      // Camera moves vertically through scene - creates depth and movement
+      // Smooth arc movement for cinematic feel
+      const arc = Math.sin(t * Math.PI) * 20; // Smooth arc for natural movement
+      return -50 + eased * 180 + arc; // Strong vertical dolly movement
     })
   );
 
+  // Camera X movement - Horizontal dolly pan (cinematic 3D side movement)
   const translateX = useTransform(
     smoothProgress,
-    Array.from({ length: 51 }, (_, i) => i / 50),
-    Array.from({ length: 51 }, (_, i) => {
-      const t = i / 50;
-      // Very subtle horizontal centering
-      return Math.sin(t * Math.PI * 0.5) * 10;
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Horizontal camera dolly movement - moves through 3D space
+      const eased = smoothEase(t);
+      // Camera moves horizontally through scene - creates lateral dolly effect
+      // Smooth S-curve movement for cinematic feel
+      const arc = Math.sin(t * Math.PI * 0.5) * 18; // Smooth arc for natural movement
+      return -40 + eased * 80 + arc; // Strong horizontal dolly pan
     })
   );
 
-  // NO ROTATION - Keep the scene perfectly straight
-  // Only pure camera dolly movement for clean, professional look
-  const rotateX = useTransform(smoothProgress, [0, 1], [0, 0]);
-  const rotateY = useTransform(smoothProgress, [0, 1], [0, 0]);
-  const rotateZ = useTransform(smoothProgress, [0, 1], [0, 0]);
+  // Controlled rotation for cinematic camera dolly effect
+  // Adds cinematic feel while maintaining professional look
+  const rotateX = useTransform(
+    smoothProgress,
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Controlled tilt down as camera moves through scene
+      const eased = smoothEase(t);
+      return eased * -2; // Controlled downward tilt (in degrees)
+    })
+  );
+  
+  const rotateY = useTransform(
+    smoothProgress,
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Controlled horizontal rotation for cinematic feel
+      const eased = smoothEase(t);
+      return Math.sin(t * Math.PI) * 1.2; // Controlled S-curve rotation
+    })
+  );
+  
+  const rotateZ = useTransform(smoothProgress, [0, 1], [0, 0]); // Keep roll at 0
 
+  // Opacity with consistent smooth transitions throughout
   const opacity = useTransform(
     smoothProgress,
-    [0, 0.3, 0.6, 0.9, 1],
-    [1, 0.99, 0.97, 0.94, 0.9]
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Consistent opacity fade - very subtle throughout
+      const eased = smoothEase(t);
+      return 1 - eased * 0.08; // Smooth fade from 1.0 to 0.92
+    })
   );
 
+  // Brightness with consistent smooth transitions
   const brightness = useTransform(
     smoothProgress,
-    [0, 0.3, 0.6, 1],
-    [1.1, 1.07, 1.04, 1.01]
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Consistent brightness adjustment throughout
+      const eased = smoothEase(t);
+      return 1.12 - eased * 0.11; // Smooth from 1.12 to 1.01
+    })
   );
 
+  // Minimal blur for clean camera dolly effect
   const blur = useTransform(
     smoothProgress,
-    [0, 0.3, 0.6, 0.85, 1],
-    [0, 0.05, 0.15, 0.3, 0.45]
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
+    Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
+      const t = i / FRAME_COUNT;
+      // Very minimal blur increase - consistent throughout
+      const eased = smoothEase(t);
+      return eased * 0.2; // From 0 to 0.2px blur - minimal for clarity
+    })
   );
 
   return (
     <section
       ref={containerRef}
       className="relative w-full"
-      style={{ height: '8000vh' }} // Very long scroll for extremely gradual camera movement
+      style={{ height: '6000vh' }} // Optimized scroll height for faster, smoother camera movement
     >
       {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-pebble-50">
+      <div 
+        className="sticky top-0 h-screen w-full overflow-hidden bg-pebble-50"
+        style={{
+          willChange: 'scroll-position',
+          transform: 'translateZ(0)', // Force GPU acceleration
+        }}
+      >
         
         {/* 3D Perspective Container */}
         <motion.div
@@ -207,6 +231,8 @@ export default function EnhancedAdalineAnimation() {
           style={{
             perspective,
             perspectiveOrigin: '50% 50%',
+            willChange: 'transform',
+            transform: 'translateZ(0)', // Force GPU acceleration
           }}
         >
           {/* Main Camera/Image Container */}
@@ -226,6 +252,9 @@ export default function EnhancedAdalineAnimation() {
               backfaceVisibility: 'hidden',
               willChange: 'transform, opacity, filter',
               transformOrigin: 'center center',
+              // GPU acceleration optimizations
+              WebkitTransform: 'translateZ(0)',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             {/* Main Image with filters */}
@@ -250,118 +279,6 @@ export default function EnhancedAdalineAnimation() {
                 }}
               />
             </motion.div>
-          </motion.div>
-
-          {/* PARALLAX LAYER 1 - Far background (slowest) */}
-          <motion.div
-            ref={layer1Ref}
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => {
-                  const t = i / 20;
-                  return Math.min(0.4, t * 0.5);
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => 1.15 - (i / 20) * 0.1)
-              ),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => (i / 20) * 80)
-              ),
-              z: useTransform(smoothProgress, [0, 1], [-50, -150]),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center bottom, rgba(251, 253, 246, 0.5) 0%, rgba(107, 120, 96, 0.08) 40%, transparent 70%)',
-                filter: 'blur(3px)',
-              }}
-            />
-          </motion.div>
-
-          {/* PARALLAX LAYER 2 - Mid-ground (medium speed) */}
-          <motion.div
-            ref={layer2Ref}
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => {
-                  const t = i / 20;
-                  return 0.08 + Math.sin(t * Math.PI) * 0.15;
-                })
-              ),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => -(i / 20) * 140)
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => 1.08 - (i / 20) * 0.06)
-              ),
-              z: useTransform(smoothProgress, [0, 1], [-30, -80]),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at 50% 70%, rgba(10, 29, 8, 0.15) 0%, rgba(10, 29, 8, 0.06) 35%, transparent 60%)',
-                filter: 'blur(1.5px)',
-              }}
-            />
-          </motion.div>
-
-          {/* PARALLAX LAYER 3 - Foreground vignette (fastest) */}
-          <motion.div
-            ref={layer3Ref}
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => {
-                  const t = i / 20;
-                  return 0.2 + Math.sin(t * Math.PI) * 0.15;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => 1.4 - (i / 20) * 0.4)
-              ),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: 21 }, (_, i) => i / 20),
-                Array.from({ length: 21 }, (_, i) => -(i / 20) * 280)
-              ),
-              z: useTransform(smoothProgress, [0, 1], [20, -30]),
-              filter: useTransform(
-                smoothProgress,
-                Array.from({ length: 11 }, (_, i) => i / 10),
-                Array.from({ length: 11 }, (_, i) => `blur(${(i / 10) * 1.2}px)`)
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 15%, rgba(251, 253, 246, 0.3) 70%, rgba(251, 253, 246, 0.6) 100%)',
-              }}
-            />
           </motion.div>
 
           {/* Atmospheric particles layer */}

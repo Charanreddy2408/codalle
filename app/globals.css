@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ultra-smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Optimize rendering performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for transforms */
+[data-scroll] {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize all animations for 60fps */
+* {
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Smooth scrolling container */
+body {
+  overscroll-behavior: none;
+  overflow-x: hidden;
+}
+
+/* Prevent scroll jank */
+img, video {
+  will-change: auto;
+}
+
+/* Optimize repaints */
+.sticky {
+  will-change: transform, opacity;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Try to load Fragment Mono if available (Adaline's custom font) */
+@font-face {
+  font-family: 'Fragment Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: local('Fragment Mono'), local('FragmentMono-Regular');
+}
+
+:root {
+  /* Font Family - Akkurat/Inter stack from Adaline */
+  --font-akkurat: 'Akkurat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-fragment-mono: "fragmentMono","fragmentMono Fallback",fragmentMono,SFMono-Regular,SF Mono,JetBrains Mono,Fira Code,Cascadia Code,Source Code Pro,ui-monospace,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+  
+  /* Pebble Color Palette (Background, neutral tones) */
+  --pebble-50: 251 253 246;
+  --pebble-100: 239 242 232;
+  --pebble-200: 224 229 213;
+  --pebble-300: 197 204 182;
+  --pebble-400: 151 161 134;
+  --pebble-500: 107 120 96;
+  --pebble-600: 80 92 71;
+  --pebble-700: 46 59 40;
+  --pebble-800: 25 41 21;
+  --pebble-900: 10 29 8;
+  --pebble-950: 5 22 4;
+  
+  /* Meadow Color Palette (Green accent, buttons, text) */
+  --meadow-50: 251 253 246;
+  --meadow-100: 236 242 223;
+  --meadow-200: 215 232 181;
+  --meadow-300: 177 204 122;
+  --meadow-400: 137 175 84;
+  --meadow-500: 99 143 61;
+  --meadow-600: 59 92 35;
+  --meadow-700: 32 59 20;
+  --meadow-800: 19 41 14;
+  --meadow-900: 10 29 8;
+  --meadow-950: 5 22 4;
+  
+  /* Navbar height */
+  --nav-height: 64px;
+  --grid-margin: 48px;
+  --nav-z-index: 200;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Optimize scrolling for 3D transforms */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  /* Remove scroll snap for smoother feel */
+  scroll-snap-type: none;
+}
+
+body {
+  font-family: var(--font-akkurat);
+  background-color: rgb(var(--pebble-50));
+  color: rgb(var(--pebble-900));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Optimize scrolling performance - NO LAG */
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* High-quality image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+  -ms-interpolation-mode: bicubic;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Smooth scroll for better parallax */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Atlas Typography Classes (from Adaline) - Fragment Mono font - EXACT SPECS */
+.atlas-web-mono {
+  font-family: var(--font-fragment-mono);
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-caps: all-small-caps;
+  font-feature-settings: "calt" 1, "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.atlas-web-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+.atlas-web-md {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.atlas-h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--pebble-50));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--pebble-300));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--pebble-400));
+}
+
+/* Ultra-smooth animations and parallax */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+  
+  /* Enable GPU acceleration for cinematic smooth scrolling */
+  [data-parallax],
+  img,
+  motion-div {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+}
+
+/* Optimize image quality during transforms */
+@media (min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Hide/Minimize Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

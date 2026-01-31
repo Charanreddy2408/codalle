@@ -16,16 +16,16 @@ export default function LenisScroll() {
 
     // Initialize Lenis with ultra-smooth settings
     const lenis = new Lenis({
-      duration: 1.5,           // Optimal duration for smooth scrolling
+      duration: 2.0,           // Longer duration for ultra-smooth scrolling
       easing: (t: number) => {
-        // Cubic ease-in-out for perfectly smooth motion throughout
+        // Quintic ease-in-out for ultra-smooth motion throughout
         return t < 0.5 
-          ? 4 * t * t * t 
-          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          ? 16 * t * t * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 5) / 2;
       },
-      wheelMultiplier: 0.8,    // Balanced for smooth, consistent speed
+      wheelMultiplier: 0.65,   // Slower for ultra-smooth feel
       normalizeWheel: true,    // Normalize wheel delta for consistency
-      lerp: 0.12,             // Optimal lerp for smooth interpolation
+      lerp: 0.06,             // Very low lerp for ultra-smooth interpolation
     } as any);
 
     // High-performance RAF loop with optimal timing

@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import Image from 'next/image';
 
 /**
  * Adaline.ai Hero Animation (Proper Implementation)
@@ -170,6 +171,7 @@ export default function AdalineAnimation() {
                 WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
               }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/scene.png"
                 alt="Scenic landscape"

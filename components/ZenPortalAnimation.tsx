@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { 
   MousePointer2, FileText, Folder, ChevronRight, 
   Code, Send, Search, Settings, Terminal
@@ -102,6 +103,7 @@ export default function ZenPortalAnimation() {
               transformOrigin: 'center 40%', // Vanishing point trick - fly toward horizon
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/scene.png"
               alt="Japanese Garden"

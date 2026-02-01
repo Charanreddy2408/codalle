@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import Image from 'next/image';
 
 /**
  * SceneryAnimation Component with PARALLAX EFFECT
@@ -146,6 +147,7 @@ export default function SceneryAnimation() {
             }}
           >
             {/* HIGH QUALITY Image - Crystal Clear */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/scene.png"
               alt="Scenic background"

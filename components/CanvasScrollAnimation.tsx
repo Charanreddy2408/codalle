@@ -37,6 +37,25 @@ export default function CanvasScrollAnimation({
     offset: ['start start', 'end start'],
   });
 
+  // Render specific frame to canvas
+  const renderFrame = useCallback((frameIndex: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { 
+      alpha: false,
+      desynchronized: true, // Better performance
+    });
+    if (!ctx) return;
+
+    const img = imagesRef.current[frameIndex];
+    if (!img || !img.complete) return;
+
+    // Clear and draw
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }, []);
+
   // Preload all frames
   useEffect(() => {
     const images: HTMLImageElement[] = [];
@@ -110,26 +129,7 @@ export default function CanvasScrollAnimation({
         cancelAnimationFrame(requestRef.current);
       }
     };
-  }, [frameCount, framePrefix]);
-
-  // Render specific frame to canvas
-  const renderFrame = useCallback((frameIndex: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d', { 
-      alpha: false,
-      desynchronized: true, // Better performance
-    });
-    if (!ctx) return;
-
-    const img = imagesRef.current[frameIndex];
-    if (!img || !img.complete) return;
-
-    // Clear and draw
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  }, []);
+  }, [frameCount, framePrefix, renderFrame]);
 
   // Update frame based on scroll with RAF for smoothness
   useEffect(() => {

@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,7 @@ export default function Hero() {
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/scene.png"
               alt="Scenery"

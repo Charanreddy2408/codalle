@@ -440,6 +440,7 @@ export default function EnhancedAdalineAnimation() {
                 WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)',
               }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/scene.png"
                 alt="Scenic landscape"

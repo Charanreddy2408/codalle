@@ -268,10 +268,10 @@ export default function ZenPortalAnimation() {
                     <span className="text-purple-600">doors</span>.<span className="text-blue-600">slide</span>(
                   </div>
                   <div className="pl-8">
-                    <span className="text-orange-600">from</span>=<span className="text-green-600">"±100%"</span>,
+                    <span className="text-orange-600">from</span>=<span className="text-green-600">&quot;±100%&quot;</span>,
                   </div>
                   <div className="pl-8">
-                    <span className="text-orange-600">to</span>=<span className="text-green-600">"±32%"</span>
+                    <span className="text-orange-600">to</span>=<span className="text-green-600">&quot;±32%&quot;</span>
                   </div>
                   <div className="pl-4">
                     <span className="text-gray-600">)</span>
@@ -299,7 +299,7 @@ export default function ZenPortalAnimation() {
               >
                 <p className="text-xs text-gray-500 mb-2 font-medium">AI Assistant</p>
                 <p className="text-sm text-gray-800 leading-relaxed">
-                  I've analyzed the Zen Portal animation. The transition uses a sophisticated dolly zoom effect with synchronized Shoji door panels. The garden scales from 1.0 to 2.8 while applying blur(40px), brightness(1.5), and saturate(1.2) filters.
+                  I&apos;ve analyzed the Zen Portal animation. The transition uses a sophisticated dolly zoom effect with synchronized Shoji door panels. The garden scales from 1.0 to 2.8 while applying blur(40px), brightness(1.5), and saturate(1.2) filters.
                 </p>
               </motion.div>
 

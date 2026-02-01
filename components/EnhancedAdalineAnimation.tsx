@@ -11,6 +11,76 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// Particle component that can use hooks properly
+function AtmosphericParticle({ 
+  smoothProgress, 
+  left, 
+  top, 
+  scaleRange, 
+  yRange, 
+  opacityRange 
+}: { 
+  smoothProgress: any; 
+  left: number; 
+  top: number; 
+  scaleRange: [number, number]; 
+  yRange: [number, number]; 
+  opacityRange: [number, number, number]; 
+}) {
+  const scale = useTransform(smoothProgress, [0, 1], scaleRange);
+  const y = useTransform(smoothProgress, [0, 1], yRange);
+  const opacity = useTransform(smoothProgress, [0, 0.5, 1], opacityRange);
+  
+  return (
+    <motion.div
+      className="absolute w-1 h-1 bg-[#6B7860]/15 rounded-full"
+      style={{
+        left: `${left}%`,
+        top: `${top}%`,
+        scale,
+        y,
+        opacity,
+        willChange: 'transform, opacity',
+      }}
+    />
+  );
+}
+
+function AtmosphericParticles({ smoothProgress }: { smoothProgress: any }) {
+  const particles = React.useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      scaleRange: [0.5 + Math.random() * 0.5, 1.2] as [number, number],
+      yRange: [0, -150 - Math.random() * 200] as [number, number],
+      opacityRange: [0, 0.2, 0] as [number, number, number],
+    }));
+  }, []);
+
+  return (
+    <motion.div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        opacity: useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 0.1, 0.15, 0.05]),
+        willChange: 'opacity',
+      }}
+    >
+      {particles.map((particle) => (
+        <AtmosphericParticle
+          key={particle.id}
+          smoothProgress={smoothProgress}
+          left={particle.left}
+          top={particle.top}
+          scaleRange={particle.scaleRange}
+          yRange={particle.yRange}
+          opacityRange={particle.opacityRange}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
 /**
  * Enhanced Adaline.ai Animation with GSAP + WebGL
  * 
@@ -407,28 +477,7 @@ export default function EnhancedAdalineAnimation() {
           </motion.div>
 
           {/* Atmospheric particles layer - optimized for performance */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              opacity: useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 0.1, 0.15, 0.05]),
-              willChange: 'opacity',
-            }}
-          >
-            {[...Array(10)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-[#6B7860]/15 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  scale: useTransform(smoothProgress, [0, 1], [0.5 + Math.random() * 0.5, 1.2]),
-                  y: useTransform(smoothProgress, [0, 1], [0, -150 - Math.random() * 200]),
-                  opacity: useTransform(smoothProgress, [0, 0.5, 1], [0, 0.2, 0]),
-                  willChange: 'transform, opacity',
-                }}
-              />
-            ))}
-          </motion.div>
+          <AtmosphericParticles smoothProgress={smoothProgress} />
         </motion.div>
       </div>
 

@@ -94,7 +94,7 @@ export default function CanvasPage() {
                 <div className="flex items-start gap-3">
                   <span className="text-green-600 font-bold">✓</span>
                   <div>
-                    <strong>Two quality tiers:</strong> "standard" (50% quality) and "high" (85% quality)
+                    <strong>Two quality tiers:</strong> &quot;standard&quot; (50% quality) and &quot;high&quot; (85% quality)
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -152,7 +152,7 @@ export default function CanvasPage() {
                 <div className="bg-white rounded-xl p-6 border border-pebble-300">
                   <h4 className="font-bold text-lg mb-3 text-pebble-900">Option 3: FFmpeg (Convert Video)</h4>
                   <div className="bg-pebble-900 text-pebble-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                    ffmpeg -i your-video.mp4 -vf "fps=24,scale=1920:1080" frame-%04d.jpg
+                    ffmpeg -i your-video.mp4 -vf &quot;fps=24,scale=1920:1080&quot; frame-%04d.jpg
                   </div>
                 </div>
               </div>

@@ -106,10 +106,32 @@ img, video {
   --meadow-900: 10 29 8;
   --meadow-950: 5 22 4;
   
-  /* Navbar height */
-  --nav-height: 64px;
+  /* Navbar height - responsive */
+  --nav-height: 80px;
   --grid-margin: 48px;
   --nav-z-index: 200;
+}
+
+/* Responsive CSS Variables */
+@media (max-width: 640px) {
+  :root {
+    --nav-height: 72px;
+    --grid-margin: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    --nav-height: 76px;
+    --grid-margin: 24px;
+  }
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --nav-height: 80px;
+    --grid-margin: 48px;
+  }
 }
 
 * {
@@ -159,8 +181,8 @@ img {
 /* Atlas Typography Classes (from Adaline) - Fragment Mono font - EXACT SPECS */
 .atlas-web-mono {
   font-family: var(--font-fragment-mono);
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 18px;
+  line-height: 18px;
   font-weight: 500;
   letter-spacing: 0.02em;
   font-variant-caps: all-small-caps;
@@ -168,6 +190,11 @@ img {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Text color utilities matching Adaline */
+.text-meadow-900 {
+  color: rgb(var(--meadow-900));
 }
 
 .atlas-web-sm {

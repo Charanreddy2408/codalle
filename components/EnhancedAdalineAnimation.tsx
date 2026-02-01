@@ -28,19 +28,22 @@ export default function EnhancedAdalineAnimation() {
   const [isClient, setIsClient] = useState(false);
 
   // Framer Motion scroll progress
+  // Animation completes when image reaches 100% width
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Ultra-smooth spring physics - optimized for buttery smooth scrolling
+  // Optimized spring physics for smooth, performant scrolling
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,        // Lower stiffness for ultra-smooth, fluid feel
-    damping: 24,          // Lower damping for more fluid motion
-    mass: 0.3,            // Lighter mass for smoother response
-    restDelta: 0.00001,   // Ultra-high precision for perfect smoothness
-    restSpeed: 0.003,     // Very slow settling for ultra-smooth motion
+    stiffness: 100,       // Higher stiffness for responsive feel
+    damping: 30,          // Balanced damping for smooth motion
+    mass: 0.5,            // Standard mass for natural response
+    restDelta: 0.001,     // Good precision without over-calculation
+    restSpeed: 0.01,      // Natural settling speed
   });
+
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
 
   // GSAP enhancements
   useGSAP(() => {
@@ -66,9 +69,9 @@ export default function EnhancedAdalineAnimation() {
     setIsClient(true);
   }, []);
 
-  // ULTRA-SMOOTH camera movement with maximum frame count
-  // More keyframes = perfectly smooth transitions throughout
-  const FRAME_COUNT = 2000; // Maximum frames for ultra-smooth camera movements
+  // ULTRA-SMOOTH camera movement with optimized frame count
+  // Balanced for performance and smoothness
+  const FRAME_COUNT = 800; // Optimized frame count for smooth performance
   
   // Ultra-smooth easing - cubic ease-in-out for consistent smoothness
   const smoothEase = (t: number) => {
@@ -79,6 +82,7 @@ export default function EnhancedAdalineAnimation() {
   };
   
   // Camera perspective - Dynamic 3D perspective for illustrative camera movement
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const perspective = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
@@ -95,6 +99,7 @@ export default function EnhancedAdalineAnimation() {
   );
 
   // Camera Z movement - Controlled 3D dolly with dynamic path
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const translateZ = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
@@ -121,6 +126,7 @@ export default function EnhancedAdalineAnimation() {
   );
 
   // Camera Y movement - Crane/vertical tracking with 3D exploration
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const translateY = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
@@ -147,6 +153,7 @@ export default function EnhancedAdalineAnimation() {
   );
 
   // Camera X movement - Tracking shot with 3D orbital movement
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const translateX = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
@@ -171,7 +178,7 @@ export default function EnhancedAdalineAnimation() {
   );
 
   // 3D Camera rotations - Illustrative camera movements
-  // Creates dynamic camera exploration of the scene
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const rotateX = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
@@ -213,38 +220,39 @@ export default function EnhancedAdalineAnimation() {
   );
 
   // Opacity with consistent smooth transitions throughout
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const opacity = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
       const t = i / FRAME_COUNT;
-      // Consistent opacity fade - very subtle throughout
       const eased = smoothEase(t);
       return 1 - eased * 0.08; // Smooth fade from 1.0 to 0.92
     })
   );
 
+
   // Brightness with consistent smooth transitions
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const brightness = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
       const t = i / FRAME_COUNT;
-      // Consistent brightness adjustment throughout
       const eased = smoothEase(t);
       return 1.12 - eased * 0.11; // Smooth from 1.12 to 1.01
     })
   );
 
   // Minimal blur for clean camera dolly effect
+  // Animation completes at 100% scroll progress - image reaches 100% width exactly when scrolling ends
   const blur = useTransform(
     smoothProgress,
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
     Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
       const t = i / FRAME_COUNT;
-      // Very minimal blur increase - consistent throughout
       const eased = smoothEase(t);
-      return eased * 0.2; // From 0 to 0.2px blur - minimal for clarity
+      return eased * 0.2; // From 0 to 0.2px blur
     })
   );
 
@@ -252,14 +260,17 @@ export default function EnhancedAdalineAnimation() {
     <section
       ref={containerRef}
       className="relative w-full"
-      style={{ height: '15000vh' }} // Extended scroll height to slow down animation, prevent window from reaching too fast
+      style={{ height: '6000vh' }} // Scroll height: animation completes at 100% scroll, scrolling stops exactly when image reaches 100% width - no extra scrollable space
     >
       {/* Sticky viewport */}
       <div 
-        className="sticky top-0 h-screen w-full overflow-hidden bg-pebble-50"
+        className="sticky top-0 h-screen w-full overflow-hidden"
         style={{
+          backgroundColor: '#FBFDF6', // Base background color
           willChange: 'scroll-position',
           transform: 'translateZ(0)', // Force GPU acceleration
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
       >
         
@@ -271,175 +282,60 @@ export default function EnhancedAdalineAnimation() {
             perspectiveOrigin: '50% 50%',
             willChange: 'transform',
             transform: 'translateZ(0)', // Force GPU acceleration
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            backgroundColor: 'transparent',
           }}
         >
-          {/* DEPTH LAYER 1 - Far Background (deepest, slowest parallax) */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              z: useTransform(smoothProgress, [0, 1], [-800, -1200]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  // Slow parallax for far background
-                  return t * 40;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.1 - t * 0.05;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return Math.min(0.4, t * 0.5);
-                })
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center top, rgba(251, 253, 246, 0.6) 0%, rgba(107, 120, 96, 0.2) 50%, transparent 80%)',
-                filter: 'blur(5px)',
-              }}
-            />
-          </motion.div>
-
-          {/* DEPTH LAYER 1.5 - Deep Mid Background (between far and mid) */}
+          {/* DEPTH LAYER 1 - Far Background (realistic, no white) */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
               z: useTransform(smoothProgress, [0, 1], [-600, -900]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return t * 20 - t * 50;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.08 - t * 0.04;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return Math.min(0.35, t * 0.45);
-                })
-              ),
+              y: useTransform(smoothProgress, [0, 1], [0, 30]),
+              scale: useTransform(smoothProgress, [0, 1], [1.08, 1.0]),
+              opacity: useTransform(smoothProgress, [0, 1], [0.2, 0.4]),
               transformStyle: 'preserve-3d',
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div
               className="w-full h-full"
               style={{
-                background: 'radial-gradient(ellipse at center, rgba(251, 253, 246, 0.5) 0%, rgba(107, 120, 96, 0.15) 45%, transparent 75%)',
-                filter: 'blur(4px)',
-              }}
-            />
-          </motion.div>
-
-          {/* DEPTH LAYER 2 - Mid Background (medium depth, medium parallax) */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              z: useTransform(smoothProgress, [0, 1], [-400, -600]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  // Medium parallax for mid background
-                  return -t * 80;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.05 - t * 0.03;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.2 + Math.sin(t * Math.PI) * 0.15;
-                })
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at 50% 60%, rgba(10, 29, 8, 0.25) 0%, rgba(10, 29, 8, 0.1) 40%, transparent 70%)',
+                background: 'radial-gradient(ellipse at center top, rgba(107, 120, 96, 0.15) 0%, rgba(10, 29, 8, 0.1) 40%, rgba(107, 120, 96, 0.05) 80%)',
                 filter: 'blur(3px)',
+                backgroundColor: 'transparent',
               }}
             />
           </motion.div>
 
-          {/* DEPTH LAYER 2.5 - Near Background (between mid background and main image) */}
+          {/* DEPTH LAYER 2 - Mid Background (realistic, no white) */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              z: useTransform(smoothProgress, [0, 1], [-200, -350]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return -t * 100;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.03 - t * 0.02;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.15 + Math.sin(t * Math.PI * 0.8) * 0.12;
-                })
-              ),
+              z: useTransform(smoothProgress, [0, 1], [-300, -500]),
+              y: useTransform(smoothProgress, [0, 1], [0, -60]),
+              scale: useTransform(smoothProgress, [0, 1], [1.04, 1.0]),
+              opacity: useTransform(smoothProgress, [0, 1], [0.1, 0.2]),
               transformStyle: 'preserve-3d',
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div
               className="w-full h-full"
               style={{
-                background: 'radial-gradient(ellipse at 50% 70%, rgba(10, 29, 8, 0.2) 0%, rgba(10, 29, 8, 0.08) 35%, transparent 65%)',
-                filter: 'blur(2px)',
+                background: 'radial-gradient(ellipse at 50% 60%, rgba(10, 29, 8, 0.15) 0%, rgba(10, 29, 8, 0.06) 40%, transparent 70%)',
+                filter: 'blur(1.5px)',
+                backgroundColor: 'transparent',
               }}
             />
           </motion.div>
 
-          {/* Main Camera/Image Container - MIDGROUND (main scene) */}
+          {/* Main Camera/Image Container - MIDGROUND (main scene) - scene.png */}
           <motion.div
             ref={imageRef}
             className="absolute inset-0"
@@ -456,12 +352,13 @@ export default function EnhancedAdalineAnimation() {
               backfaceVisibility: 'hidden',
               willChange: 'transform, opacity, filter',
               transformOrigin: 'center center',
+              backgroundColor: 'transparent', // Transparent to show natural background
               // GPU acceleration optimizations
               WebkitTransform: 'translateZ(0)',
               WebkitBackfaceVisibility: 'hidden',
             }}
           >
-            {/* Main Image with filters */}
+            {/* Scene Image with filters */}
             <motion.div
               className="w-full h-full relative"
               style={{
@@ -479,195 +376,55 @@ export default function EnhancedAdalineAnimation() {
                 className="w-full h-full object-cover"
                 style={{
                   objectPosition: 'top 15% center',
-                  imageRendering: 'crisp-edges',
+                  imageRendering: 'auto' as any,
                 }}
               />
             </motion.div>
           </motion.div>
 
-          {/* DEPTH LAYER 2.75 - Near Foreground (between main image and foreground) */}
+          {/* DEPTH LAYER 3 - Foreground (realistic, subtle) */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              z: useTransform(smoothProgress, [0, 1], [100, -50]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return -t * 120;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.08 - t * 0.06;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.25 + Math.sin(t * Math.PI * 0.7) * 0.15;
-                })
-              ),
+              z: useTransform(smoothProgress, [0, 1], [150, -100]),
+              y: useTransform(smoothProgress, [0, 1], [0, -120]),
+              scale: useTransform(smoothProgress, [0, 1], [1.12, 1.0]),
+              opacity: useTransform(smoothProgress, [0, 1], [0.15, 0.2]),
               transformStyle: 'preserve-3d',
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div
               className="w-full h-full"
               style={{
-                background: 'radial-gradient(ellipse at center, transparent 25%, rgba(251, 253, 246, 0.4) 65%, rgba(251, 253, 246, 0.7) 100%)',
-                filter: 'blur(1.5px)',
-              }}
-            />
-          </motion.div>
-
-          {/* DEPTH LAYER 3 - Foreground (closest, fastest parallax) */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              z: useTransform(smoothProgress, [0, 1], [200, -200]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  // Fast parallax for foreground
-                  return -t * 150;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.15 - t * 0.1;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.3 + Math.sin(t * Math.PI) * 0.2;
-                })
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 20%, rgba(251, 253, 246, 0.5) 60%, rgba(251, 253, 246, 0.8) 100%)',
-                filter: 'blur(1px)',
-              }}
-            />
-          </motion.div>
-
-          {/* DEPTH LAYER 3.5 - Mid Foreground (between foreground and ultra foreground) */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              z: useTransform(smoothProgress, [0, 1], [300, 0]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return -t * 200;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.2 - t * 0.12;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.2 + Math.sin(t * Math.PI * 1.2) * 0.15;
-                })
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center bottom, rgba(251, 253, 246, 0.35) 0%, transparent 55%)',
-                filter: 'blur(0.75px)',
-              }}
-            />
-          </motion.div>
-
-          {/* DEPTH LAYER 4 - Ultra Foreground (closest layer, very fast parallax) */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              z: useTransform(smoothProgress, [0, 1], [400, 100]),
-              y: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  // Very fast parallax for ultra foreground
-                  return -t * 250;
-                })
-              ),
-              scale: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 1.25 - t * 0.15;
-                })
-              ),
-              opacity: useTransform(
-                smoothProgress,
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => i / FRAME_COUNT),
-                Array.from({ length: FRAME_COUNT + 1 }, (_, i) => {
-                  const t = i / FRAME_COUNT;
-                  return 0.15 + Math.sin(t * Math.PI * 1.5) * 0.1;
-                })
-              ),
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center bottom, rgba(251, 253, 246, 0.3) 0%, transparent 60%)',
+                background: 'radial-gradient(ellipse at center, transparent 30%, rgba(107, 120, 96, 0.1) 70%, rgba(10, 29, 8, 0.05) 100%)',
                 filter: 'blur(0.5px)',
+                backgroundColor: 'transparent',
               }}
             />
           </motion.div>
 
-          {/* Atmospheric particles layer */}
+          {/* Atmospheric particles layer - optimized for performance */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              opacity: useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 0.15, 0.25, 0.1]),
+              opacity: useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 0.1, 0.15, 0.05]),
+              willChange: 'opacity',
             }}
           >
-            {[...Array(30)].map((_, i) => (
+            {[...Array(10)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-white/30 rounded-full"
+                className="absolute w-1 h-1 bg-[#6B7860]/15 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  scale: useTransform(smoothProgress, [0, 1], [0.5 + Math.random() * 0.5, 1.5]),
-                  y: useTransform(smoothProgress, [0, 1], [0, -200 - Math.random() * 300]),
-                  opacity: useTransform(smoothProgress, [0, 0.5, 1], [0, 0.5, 0]),
+                  scale: useTransform(smoothProgress, [0, 1], [0.5 + Math.random() * 0.5, 1.2]),
+                  y: useTransform(smoothProgress, [0, 1], [0, -150 - Math.random() * 200]),
+                  opacity: useTransform(smoothProgress, [0, 0.5, 1], [0, 0.2, 0]),
+                  willChange: 'transform, opacity',
                 }}
               />
             ))}
